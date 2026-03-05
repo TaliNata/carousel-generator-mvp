@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: carousel_generator_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: carousel_generator
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - carousel_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carousel_generator_api
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/carousel_generator
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      DEBUG: "True"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app/backend
+    networks:
+      - carousel_network
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
+
+networks:
+  carousel_network:
+    driver: bridge
