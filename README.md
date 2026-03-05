@@ -2,6 +2,8 @@
 
 Mini-product that generates Instagram carousel slides using an LLM.
 
+<img width="1860" height="871" alt="Снимок экрана 2026-03-05 160446" src="https://github.com/user-attachments/assets/b7b589ae-eada-48ed-bb87-9de0195cd561" />
+
 ## Tech stack
 
 **Backend:**
